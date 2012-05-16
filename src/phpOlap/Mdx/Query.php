@@ -28,6 +28,9 @@ class Query
 	protected $colElements = array();
 	protected $filterElements = array();
 	protected $nonEmpty = false;
+	protected $drillThrough = false;
+	protected $drillThroughMaxRows = null;
+	protected $drillThroughFirstRowSet = null;
 
     /**
      * Constructor.
@@ -38,6 +41,32 @@ class Query
 	public function __construct($cubeName)
 	{
 		$this->cubeName = $cubeName;
+	}
+
+	/**
+     * Set drillThrough
+     *
+     * @param Boolean $drillThrough drillThrough
+     * @param Int $drillThroughMaxRows
+     * @param Int $drillThroughFirstRowSet
+     *
+     */
+	public function setDrillThrough($drillThrough, $drillThroughMaxRows = null, $drillThroughFirstRowSet = null)
+	{
+		$this->drillThrough = $drillThrough ? true : false;
+		$this->drillThroughMaxRows = $drillThroughMaxRows;
+		$this->drillThroughFirstRowSet = $drillThroughFirstRowSet;
+	}
+
+    /**
+     * isDrillThrough
+     *
+     * @return Boolean drillThrough
+     *
+     */
+	public function isDrillThrough()
+	{
+		return $this->drillThrough;
 	}
 
     /**
@@ -108,7 +137,10 @@ class Query
 		
 		$nonEmpty = $this->nonEmpty ? 'NON EMPTY ' : '';
 		
-		$mdx = "SELECT " .
+		$mdx =  ($this->drillThrough ? 'DRILLTHROUGH ':'').
+				(!is_null($this->drillThroughMaxRows) ? 'MAXROWS '.$this->drillThroughMaxRows.' ' : '').
+				(!is_null($this->drillThroughFirstRowSet) ? 'FRISTROWSET '.$this->drillThroughFirstRowSet : '').
+				"SELECT " .
 				$nonEmpty .
 				$this->getMdxPart($this->colElements) .
 				" ON COLUMNS, " .

@@ -252,4 +252,23 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$test->setNonEmpty(true);
 		$this->assertEquals($test->getNonEmpty(), true);
 	}
+
+	public function testDrillThrough()
+	{
+		$test = new Query("[Sales]");
+		$test->addElement("[Measures].[Unit Sales]", "COL");
+		$test->addElement("[Promotion Media].[All Media]", "ROW");
+		$test->setDrillThrough(true);
+
+		$result = 'DRILLTHROUGH SELECT {[Measures].[Unit Sales]} ON COLUMNS, [Promotion Media].[All Media] ON ROWS FROM [Sales]';
+		$this->assertEquals($test->toMdx(), $result);
+		$this->assertEquals($test->isDrillThrough(), true);
+
+		$test->setDrillThrough(true, 30, 60);
+		$result = 'DRILLTHROUGH MAXROWS 30 FRISTROWSET 60SELECT {[Measures].[Unit Sales]} ON COLUMNS, [Promotion Media].[All Media] ON ROWS FROM [Sales]';
+		$this->assertEquals($test->toMdx(), $result);
+
+		$test->setDrillThrough(false);
+		$this->assertEquals($test->isDrillThrough(), false);
+	}
 }

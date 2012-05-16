@@ -18,6 +18,7 @@ use phpOlap\Xmla\Metadata\Database;
 use phpOlap\Xmla\Metadata\Catalog;
 use phpOlap\Xmla\Metadata\Schema;
 use phpOlap\Xmla\Metadata\ResultSet;
+use phpOlap\Xmla\Metadata\ResultSetTabular;
 
 /**
 *	Connection Interface
@@ -280,8 +281,15 @@ class Connection  implements ConnectionInterface
 		$propertyList = self::setDefault('AxisFormat', 'TupleFormat', $propertyList);
 		$propertyList = self::setDefault('DataSourceInfo', $this->dataSourceInfo, $propertyList);
 		$propertyList = self::setDefault('Catalog', $this->catalogName, $propertyList);
-
-		$resultSet = new resultSet();
+		
+		if ($propertyList['Format'] == 'Tabular')
+		{
+			$resultSet = new ResultSetTabular(strpos($mdx, 'DRILLTHROUGH') !== false);
+		}
+		else
+		{
+			$resultSet = new resultSet();
+		}
 		$resultSet->hydrate($this->getSoapAdaptator()->execute($mdx, $propertyList));
 		return $resultSet;
 	}	
