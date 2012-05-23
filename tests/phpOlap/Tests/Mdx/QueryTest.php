@@ -265,7 +265,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals($test->isDrillThrough(), true);
 
 		$test->setDrillThrough(true, 30, 60);
-		$result = 'DRILLTHROUGH MAXROWS 30 FRISTROWSET 60SELECT {[Measures].[Unit Sales]} ON COLUMNS, [Promotion Media].[All Media] ON ROWS FROM [Sales]';
+		$result = 'DRILLTHROUGH MAXROWS 30 FIRSTROWSET 60 SELECT {[Measures].[Unit Sales]} ON COLUMNS, [Promotion Media].[All Media] ON ROWS FROM [Sales]';
 		$this->assertEquals($test->toMdx(), $result);
 
 		$test->setDrillThrough(false);
