@@ -94,7 +94,7 @@ class HtmlTableLayout extends TableLayoutAbstract
 		if (!$isFirst) {
 			return;
 		}
-		return sprintf('<th class="empty" rowspan="%d" colspan="%d"></th>',$height, $width);
+		return sprintf('<th class="empty" rowspan="%d"></th>',$height, $width);
 	}
 	
     /**
