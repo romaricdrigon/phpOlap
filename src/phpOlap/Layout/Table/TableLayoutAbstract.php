@@ -134,26 +134,30 @@ abstract class TableLayoutAbstract implements LayoutInterface
 		$rowAxisSet = $this->resultSet->getRowAxisSet();
 		$dataSet = $this->resultSet->getDataSet();
 		
-		foreach($rowAxisSet as $row => $aCol)
-		{
-			$rowContent = '';
-			$even = ($row%2 == 0) ? true : false;
+		if (is_array($rowAxisSet))
+        {
+            foreach($rowAxisSet as $row => $aCol)
+            {
+                $rowContent = '';
+                $even = ($row%2 == 0) ? true : false;
 
-			// Axis cells
-			foreach ($aCol as $col => $oCol) {
-				$rowContent .= $this->renderBodyCellAxis($row, $col, $rowAxisSet);
-			}
-			
-			// Datas
-			$rowNum = count($this->resultSet->getColAxisSet());
-			$start =  $rowNum * $row;
-			$stop = $start + $rowNum;
-			for ($i=$start; $i < $stop; $i++) { 
-				$rowContent .= $this->renderBodyCellData($i);
-			}
-			
-			$body .= str_replace("{{cells}}", $rowContent, $this->renderBodyRow($even));			
-		}
+                // Axis cells
+                foreach ($aCol as $col => $oCol) {
+                    $rowContent .= $this->renderBodyCellAxis($row, $col, $rowAxisSet);
+                }
+
+                // Datas
+                $rowNum = count($this->resultSet->getColAxisSet());
+                $start =  $rowNum * $row;
+                $stop = $start + $rowNum;
+                for ($i=$start; $i < $stop; $i++) {
+                    $rowContent .= $this->renderBodyCellData($i);
+                }
+
+                $body .= str_replace("{{cells}}", $rowContent, $this->renderBodyRow($even));
+            }
+        }
+
 		return $body;
 		
 	}
