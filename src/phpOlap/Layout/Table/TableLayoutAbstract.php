@@ -97,7 +97,7 @@ abstract class TableLayoutAbstract implements LayoutInterface
 													($topLeft && !$this->displayRowColHierarchyTitle));
 					$rowHeaderContent .= $this->renderHeaderCellEmpty(
 													$rowNb - 1,
-													count($this->resultSet->getColHierarchiesName()),
+													count($this->resultSet->getColHierarchiesName())-1,
 													$topLeft);
 				}
 			}
