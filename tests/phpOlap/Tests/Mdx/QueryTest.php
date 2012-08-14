@@ -276,9 +276,8 @@ class QueryTest extends \PHPUnit_Framework_TestCase
     {
         $test = new Query("[Sales]");
         $test->addElement("[Measures].[Store Sales]", "ROW");
-        $test->addElement("[Measures].[moyenne]", "ROW");
         $test->addElement("[Time].[Month].Members", "COL");
-        $test->addCalculatedMember("[Measures].[moyenne]", "[Measures].[Store Sales] / [Measures].[Sales Count]");
+        $test->addCalculatedMember("[Measures].[moyenne]", "[Measures].[Store Sales] / [Measures].[Sales Count]", "ROW");
 
         $result = "WITH MEMBER [Measures].[moyenne] AS [Measures].[Store Sales]".
                     " / [Measures].[Sales Count] SELECT [Time].[Month].Members ON COLUMNS,".
@@ -292,11 +291,9 @@ class QueryTest extends \PHPUnit_Framework_TestCase
     {
         $test = new Query("[Sales]");
         $test->addElement("[Measures].[Store Sales]", "ROW");
-        $test->addElement("[Measures].[moyenne]", "ROW");
-        $test->addElement("[Measures].[tendance]", "ROW");
         $test->addElement("[Time].[Month].Members", "COL");
-        $test->addCalculatedMember('[Measures].[moyenne]', '[Measures].[Store Sales] / [Measures].[Sales Count]');
-        $test->addCalculatedMember('[Measures].[tendance]', 'IIF(([Measures].[Store Sales], Time.PrevMember)<=([Measures].[Store Sales], Time.CurrentMember), "Croissance", "Décroissance")');
+        $test->addCalculatedMember('[Measures].[moyenne]', '[Measures].[Store Sales] / [Measures].[Sales Count]', 'ROW');
+        $test->addCalculatedMember('[Measures].[tendance]', 'IIF(([Measures].[Store Sales], Time.PrevMember)<=([Measures].[Store Sales], Time.CurrentMember), "Croissance", "Décroissance")', 'ROW');
 
         $result = 'WITH MEMBER [Measures].[moyenne] AS [Measures].[Store Sales]'.
             ' / [Measures].[Sales Count] MEMBER [Measures].[tendance] AS'.

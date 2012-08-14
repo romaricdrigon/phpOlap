@@ -123,10 +123,11 @@ class Query
      * Add a calculated member
      *
      * @param String $element Element unique name
+     * @param String $formula Formula
      * @param String $axis Axis name ("ROW", "COL" or "FILTER")
      *
      */
-    public function addCalculatedMember($element, $formula)
+    public function addCalculatedMember($element, $formula, $axis)
     {
         $member = array(
                     'name' => $element,
@@ -134,6 +135,7 @@ class Query
                   );
 
         $this->calcMemberElements[] = $member;
+        $this->addElement($element, $axis);
     }
 
     /**
