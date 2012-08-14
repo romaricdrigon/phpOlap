@@ -74,30 +74,29 @@ abstract class TableLayoutAbstract implements LayoutInterface
 		$header = '';
 		
 		foreach ($this->resultSet->getColHierarchiesName() as $row => $colHierarchyName) {
-			
 			$rowHeaderContent = '';
 			$rowContent = '';
 			
-			//	Row Hierarchy Title	
+			//	Row Hierarchy Title
 			foreach ($this->resultSet->getRowHierarchiesName() as $col => $rowHierarchyName) {
-			    
 			    $topLeft = ($row == 0 && $col == 0);
+
+                $count = count($this->resultSet->getRowHierarchiesName());
 			    
-				if ($row +1 == count($this->resultSet->getColHierarchiesName()) ) {				
+				if ($row +1 == count($this->resultSet->getColHierarchiesName())) {
 					$rowContent .= $this->renderHeaderCellRowHierarchyTitle($rowHierarchyName, $rowNb);
 					$rowHeaderContent .= $this->renderHeaderCellEmpty(
 													$rowNb - 1,
-													count($this->resultSet->getRowHierarchiesName()),
+													$count,
 													$topLeft);
 				} else { // empty cells
-					
 					$rowContent .= $this->renderHeaderCellEmpty(
 													$rowNb - 1,
-													count($this->resultSet->getColHierarchiesName()),
+                                                    $count,
 													($topLeft && !$this->displayRowColHierarchyTitle));
 					$rowHeaderContent .= $this->renderHeaderCellEmpty(
 													$rowNb - 1,
-													count($this->resultSet->getColHierarchiesName())-1,
+                                                    $count,
 													$topLeft);
 				}
 			}

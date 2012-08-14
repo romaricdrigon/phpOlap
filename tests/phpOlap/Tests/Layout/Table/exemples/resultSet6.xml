@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" >
+    <SOAP-ENV:Header>
+    </SOAP-ENV:Header>
+    <SOAP-ENV:Body>
+        <cxmla:ExecuteResponse xmlns:cxmla="urn:schemas-microsoft-com:xml-analysis">
+            <cxmla:return>
+                <root xmlns="urn:schemas-microsoft-com:xml-analysis:mddataset" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:EX="urn:schemas-microsoft-com:xml-analysis:exception">
+                    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:schemas-microsoft-com:xml-analysis:mddataset" xmlns="urn:schemas-microsoft-com:xml-analysis:mddataset" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sql="urn:schemas-microsoft-com:xml-sql" elementFormDefault="qualified">
+                        <xsd:complexType name="MemberType">
+                            <xsd:sequence>
+                                <xsd:element name="UName" type="xsd:string"/>
+                                <xsd:element name="Caption" type="xsd:string"/>
+                                <xsd:element name="LName" type="xsd:string"/>
+                                <xsd:element name="LNum" type="xsd:unsignedInt"/>
+                                <xsd:element name="DisplayInfo" type="xsd:unsignedInt"/>
+                                <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+                                    <xsd:any processContents="lax" maxOccurs="unbounded"/>
+                                </xsd:sequence>
+                            </xsd:sequence>
+                            <xsd:attribute name="Hierarchy" type="xsd:string"/>
+                        </xsd:complexType>
+                        <xsd:complexType name="PropType">
+                            <xsd:attribute name="name" type="xsd:string"/>
+                        </xsd:complexType>
+                        <xsd:complexType name="TupleType">
+                            <xsd:sequence maxOccurs="unbounded">
+                                <xsd:element name="Member" type="MemberType"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                        <xsd:complexType name="MembersType">
+                            <xsd:sequence maxOccurs="unbounded">
+                                <xsd:element name="Member" type="MemberType"/>
+                            </xsd:sequence>
+                            <xsd:attribute name="Hierarchy" type="xsd:string"/>
+                        </xsd:complexType>
+                        <xsd:complexType name="TuplesType">
+                            <xsd:sequence maxOccurs="unbounded">
+                                <xsd:element name="Tuple" type="TupleType"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                        <xsd:complexType name="CrossProductType">
+                            <xsd:sequence>
+                                <xsd:choice minOccurs="0" maxOccurs="unbounded">
+                                    <xsd:element name="Members" type="MembersType"/>
+                                    <xsd:element name="Tuples" type="TuplesType"/>
+                                </xsd:choice>
+                            </xsd:sequence>
+                            <xsd:attribute name="Size" type="xsd:unsignedInt"/>
+                        </xsd:complexType>
+                        <xsd:complexType name="OlapInfo">
+                            <xsd:sequence>
+                                <xsd:element name="CubeInfo">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="Cube" maxOccurs="unbounded">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="CubeName" type="xsd:string"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                                <xsd:element name="AxesInfo">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="AxisInfo" maxOccurs="unbounded">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="HierarchyInfo" minOccurs="0" maxOccurs="unbounded">
+                                                            <xsd:complexType>
+                                                                <xsd:sequence>
+                                                                    <xsd:sequence maxOccurs="unbounded">
+                                                                        <xsd:element name="UName" type="PropType"/>
+                                                                        <xsd:element name="Caption" type="PropType"/>
+                                                                        <xsd:element name="LName" type="PropType"/>
+                                                                        <xsd:element name="LNum" type="PropType"/>
+                                                                        <xsd:element name="DisplayInfo" type="PropType" minOccurs="0" maxOccurs="unbounded"/>
+                                                                    </xsd:sequence>
+                                                                    <xsd:sequence>
+                                                                        <xsd:any processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+                                                                    </xsd:sequence>
+                                                                </xsd:sequence>
+                                                                <xsd:attribute name="name" type="xsd:string" use="required"/>
+                                                            </xsd:complexType>
+                                                        </xsd:element>
+                                                    </xsd:sequence>
+                                                    <xsd:attribute name="name" type="xsd:string"/>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                                <xsd:element name="CellInfo">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+                                                <xsd:choice>
+                                                    <xsd:element name="Value" type="PropType"/>
+                                                    <xsd:element name="FmtValue" type="PropType"/>
+                                                    <xsd:element name="BackColor" type="PropType"/>
+                                                    <xsd:element name="ForeColor" type="PropType"/>
+                                                    <xsd:element name="FontName" type="PropType"/>
+                                                    <xsd:element name="FontSize" type="PropType"/>
+                                                    <xsd:element name="FontFlags" type="PropType"/>
+                                                    <xsd:element name="FormatString" type="PropType"/>
+                                                    <xsd:element name="NonEmptyBehavior" type="PropType"/>
+                                                    <xsd:element name="SolveOrder" type="PropType"/>
+                                                    <xsd:element name="Updateable" type="PropType"/>
+                                                    <xsd:element name="Visible" type="PropType"/>
+                                                    <xsd:element name="Expression" type="PropType"/>
+                                                </xsd:choice>
+                                            </xsd:sequence>
+                                            <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+                                                <xsd:any processContents="lax" maxOccurs="unbounded"/>
+                                            </xsd:sequence>
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                        <xsd:complexType name="Axes">
+                            <xsd:sequence maxOccurs="unbounded">
+                                <xsd:element name="Axis">
+                                    <xsd:complexType>
+                                        <xsd:choice minOccurs="0" maxOccurs="unbounded">
+                                            <xsd:element name="CrossProduct" type="CrossProductType"/>
+                                            <xsd:element name="Tuples" type="TuplesType"/>
+                                            <xsd:element name="Members" type="MembersType"/>
+                                        </xsd:choice>
+                                        <xsd:attribute name="name" type="xsd:string"/>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                        <xsd:complexType name="CellData">
+                            <xsd:sequence>
+                                <xsd:element name="Cell" minOccurs="0" maxOccurs="unbounded">
+                                    <xsd:complexType>
+                                        <xsd:sequence maxOccurs="unbounded">
+                                            <xsd:choice>
+                                                <xsd:element name="Value"/>
+                                                <xsd:element name="FmtValue" type="xsd:string"/>
+                                                <xsd:element name="BackColor" type="xsd:unsignedInt"/>
+                                                <xsd:element name="ForeColor" type="xsd:unsignedInt"/>
+                                                <xsd:element name="FontName" type="xsd:string"/>
+                                                <xsd:element name="FontSize" type="xsd:unsignedShort"/>
+                                                <xsd:element name="FontFlags" type="xsd:unsignedInt"/>
+                                                <xsd:element name="FormatString" type="xsd:string"/>
+                                                <xsd:element name="NonEmptyBehavior" type="xsd:unsignedShort"/>
+                                                <xsd:element name="SolveOrder" type="xsd:unsignedInt"/>
+                                                <xsd:element name="Updateable" type="xsd:unsignedInt"/>
+                                                <xsd:element name="Visible" type="xsd:unsignedInt"/>
+                                                <xsd:element name="Expression" type="xsd:string"/>
+                                            </xsd:choice>
+                                        </xsd:sequence>
+                                        <xsd:attribute name="CellOrdinal" type="xsd:unsignedInt" use="required"/>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                        <xsd:element name="root">
+                            <xsd:complexType>
+                                <xsd:sequence maxOccurs="unbounded">
+                                    <xsd:element name="OlapInfo" type="OlapInfo"/>
+                                    <xsd:element name="Axes" type="Axes"/>
+                                    <xsd:element name="CellData" type="CellData"/>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:schema>
+                    <OlapInfo>
+                        <CubeInfo>
+                            <Cube>
+                                <CubeName>Sales</CubeName>
+                            </Cube>
+                        </CubeInfo>
+                        <AxesInfo>
+                            <AxisInfo name="Axis0">
+                                <HierarchyInfo name="Store">
+                                    <UName name="[Store].[MEMBER_UNIQUE_NAME]"/>
+                                    <Caption name="[Store].[MEMBER_CAPTION]"/>
+                                    <LName name="[Store].[LEVEL_UNIQUE_NAME]"/>
+                                    <LNum name="[Store].[LEVEL_NUMBER]"/>
+                                    <DisplayInfo name="[Store].[DISPLAY_INFO]"/>
+                                </HierarchyInfo>
+                                <HierarchyInfo name="Store Type">
+                                    <UName name="[Store Type].[MEMBER_UNIQUE_NAME]"/>
+                                    <Caption name="[Store Type].[MEMBER_CAPTION]"/>
+                                    <LName name="[Store Type].[LEVEL_UNIQUE_NAME]"/>
+                                    <LNum name="[Store Type].[LEVEL_NUMBER]"/>
+                                    <DisplayInfo name="[Store Type].[DISPLAY_INFO]"/>
+                                </HierarchyInfo>
+                            </AxisInfo>
+                            <AxisInfo name="Axis1">
+                                <HierarchyInfo name="Measures">
+                                    <UName name="[Measures].[MEMBER_UNIQUE_NAME]"/>
+                                    <Caption name="[Measures].[MEMBER_CAPTION]"/>
+                                    <LName name="[Measures].[LEVEL_UNIQUE_NAME]"/>
+                                    <LNum name="[Measures].[LEVEL_NUMBER]"/>
+                                    <DisplayInfo name="[Measures].[DISPLAY_INFO]"/>
+                                </HierarchyInfo>
+                            </AxisInfo>
+                            <AxisInfo name="SlicerAxis"/>
+                        </AxesInfo>
+                        <CellInfo>
+                            <Value name="VALUE"/>
+                            <FmtValue name="FORMATTED_VALUE"/>
+                            <FormatString name="FORMAT_STRING"/>
+                        </CellInfo>
+                    </OlapInfo>
+                    <Axes>
+                        <Axis name="Axis0">
+                            <Tuples>
+                                <Tuple>
+                                    <Member Hierarchy="Store">
+                                        <UName>[Store].[USA]</UName>
+                                        <Caption>USA</Caption>
+                                        <LName>[Store].[Store Country]</LName>
+                                        <LNum>1</LNum>
+                                        <DisplayInfo>3</DisplayInfo>
+                                    </Member>
+                                    <Member Hierarchy="Store Type">
+                                        <UName>[Store Type].[Deluxe Supermarket]</UName>
+                                        <Caption>Deluxe Supermarket</Caption>
+                                        <LName>[Store Type].[Store Type]</LName>
+                                        <LNum>1</LNum>
+                                        <DisplayInfo>0</DisplayInfo>
+                                    </Member>
+                                </Tuple>
+                                <Tuple>
+                                    <Member Hierarchy="Store">
+                                        <UName>[Store].[USA]</UName>
+                                        <Caption>USA</Caption>
+                                        <LName>[Store].[Store Country]</LName>
+                                        <LNum>1</LNum>
+                                        <DisplayInfo>131075</DisplayInfo>
+                                    </Member>
+                                    <Member Hierarchy="Store Type">
+                                        <UName>[Store Type].[Gourmet Supermarket]</UName>
+                                        <Caption>Gourmet Supermarket</Caption>
+                                        <LName>[Store Type].[Store Type]</LName>
+                                        <LNum>1</LNum>
+                                        <DisplayInfo>131072</DisplayInfo>
+                                    </Member>
+                                </Tuple>
+                                <Tuple>
+                                    <Member Hierarchy="Store">
+                                        <UName>[Store].[USA]</UName>
+                                        <Caption>USA</Caption>
+                                        <LName>[Store].[Store Country]</LName>
+                                        <LNum>1</LNum>
+                                        <DisplayInfo>131075</DisplayInfo>
+                                    </Member>
+                                    <Member Hierarchy="Store Type">
+                                        <UName>[Store Type].[Mid-Size Grocery]</UName>
+                                        <Caption>Mid-Size Grocery</Caption>
+                                        <LName>[Store Type].[Store Type]</LName>
+                                        <LNum>1</LNum>
+                                        <DisplayInfo>131072</DisplayInfo>
+                                    </Member>
+                                </Tuple>
+                                <Tuple>
+                                    <Member Hierarchy="Store">
+                                        <UName>[Store].[USA]</UName>
+                                        <Caption>USA</Caption>
+                                        <LName>[Store].[Store Country]</LName>
+                                        <LNum>1</LNum>
+                                        <DisplayInfo>131075</DisplayInfo>
+                                    </Member>
+                                    <Member Hierarchy="Store Type">
+                                        <UName>[Store Type].[Small Grocery]</UName>
+                                        <Caption>Small Grocery</Caption>
+                                        <LName>[Store Type].[Store Type]</LName>
+                                        <LNum>1</LNum>
+                                        <DisplayInfo>131072</DisplayInfo>
+                                    </Member>
+                                </Tuple>
+                                <Tuple>
+                                    <Member Hierarchy="Store">
+                                        <UName>[Store].[USA]</UName>
+                                        <Caption>USA</Caption>
+                                        <LName>[Store].[Store Country]</LName>
+                                        <LNum>1</LNum>
+                                        <DisplayInfo>131075</DisplayInfo>
+                                    </Member>
+                                    <Member Hierarchy="Store Type">
+                                        <UName>[Store Type].[Supermarket]</UName>
+                                        <Caption>Supermarket</Caption>
+                                        <LName>[Store Type].[Store Type]</LName>
+                                        <LNum>1</LNum>
+                                        <DisplayInfo>131072</DisplayInfo>
+                                    </Member>
+                                </Tuple>
+                            </Tuples>
+                        </Axis>
+                        <Axis name="Axis1">
+                            <Tuples>
+                                <Tuple>
+                                    <Member Hierarchy="Measures">
+                                        <UName>[Measures].[Customer Count]</UName>
+                                        <Caption>Customer Count</Caption>
+                                        <LName>[Measures].[MeasuresLevel]</LName>
+                                        <LNum>0</LNum>
+                                        <DisplayInfo>0</DisplayInfo>
+                                    </Member>
+                                </Tuple>
+                            </Tuples>
+                        </Axis>
+                        <Axis name="SlicerAxis">
+                            <Tuples>
+                                <Tuple/>
+                            </Tuples>
+                        </Axis>
+                    </Axes>
+                    <CellData>
+                        <Cell CellOrdinal="0">
+                            <Value xsi:type="xsd:int">752</Value>
+                            <FmtValue>752</FmtValue>
+                            <FormatString>#,###</FormatString>
+                        </Cell>
+                        <Cell CellOrdinal="1">
+                            <Value xsi:type="xsd:int">1059</Value>
+                            <FmtValue>1 059</FmtValue>
+                            <FormatString>#,###</FormatString>
+                        </Cell>
+                        <Cell CellOrdinal="2">
+                            <Value xsi:type="xsd:int">95</Value>
+                            <FmtValue>95</FmtValue>
+                            <FormatString>#,###</FormatString>
+                        </Cell>
+                        <Cell CellOrdinal="3">
+                            <Value xsi:type="xsd:int">582</Value>
+                            <FmtValue>582</FmtValue>
+                            <FormatString>#,###</FormatString>
+                        </Cell>
+                        <Cell CellOrdinal="4">
+                            <Value xsi:type="xsd:int">3841</Value>
+                            <FmtValue>3 841</FmtValue>
+                            <FormatString>#,###</FormatString>
+                        </Cell>
+                    </CellData>
+                </root>
+            </cxmla:return>
+        </cxmla:ExecuteResponse>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

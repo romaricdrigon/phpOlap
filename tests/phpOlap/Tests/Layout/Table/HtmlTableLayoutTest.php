@@ -48,14 +48,13 @@ class HtmlTableLayoutTest extends \PHPUnit_Framework_TestCase
         
     }
 
-
     public function test3Col3Rows()
     {
 		$test = $this->generateTable('resultSet3.xml');
 		
 		$result = '<table class="olapGrid"><thead><tr><th class="empty" rowspan="5" colspan="3"></th><th colspan="3">Measures</th></tr><tr><th colspan="1">Unit Sales</th><th colspan="1">Store Cost</th><th colspan="1">Store Sales</th></tr><tr><th colspan="3">Gender</th></tr><tr><th colspan="1">All Gender</th><th colspan="1">All Gender</th><th colspan="1">All Gender</th></tr><tr><th colspan="3">Store</th></tr><tr><th rowspan="">Education Level</th><th rowspan="">Customers</th><th rowspan="">Product</th><th colspan="1">All Stores</th><th colspan="1">All Stores</th><th colspan="1">All Stores</th></tr></thead><tbody><tr class="even"><th rowspan="1"> All Education Levels</th><th rowspan="1"> All Customers</th><th rowspan="1"> All Products</th><td>266,773</td><td>225,627.23</td><td>565,238.13</td></tr></tbody></table>';
-		
-        $this->assertEquals($test->generate(), $result); 
+
+        $this->assertEquals($test->generate(), $result);
         
         $test->displayRowColHierarchyTitle = false;
         
@@ -81,6 +80,38 @@ class HtmlTableLayoutTest extends \PHPUnit_Framework_TestCase
         
     }
 
+
+    public function test1DimensionsShift()
+    {
+        $test = $this->generateTable('resultSet5.xml');
+
+        $result = '<table class="olapGrid"><thead><tr><th class="empty" rowspan="3" colspan="1"></th><th colspan="2">Gender</th></tr><tr><th colspan="1">F</th><th colspan="1">M</th></tr><tr><th colspan="2">Measures</th></tr><tr><th rowspan="">Product</th><th colspan="1">Customer Count</th><th colspan="1">Customer Count</th></tr></thead><tbody><tr class="even"><th rowspan="1">&nbsp;&nbsp; Drink</th><td>1 753</td><td>1 732</td></tr><tr class="odd"><th rowspan="1">&nbsp;&nbsp; Food</th><td>2 735</td><td>2 790</td></tr><tr class="even"><th rowspan="1">&nbsp;&nbsp; Non-Consumable</th><td>2 206</td><td>2 262</td></tr></tbody></table>';
+
+        $this->assertEquals($test->generate(), $result);
+
+    }
+
+    public function test2DimensionsShift()
+    {
+        $test = $this->generateTable('resultSet6.xml');
+
+        $result = '<table class="olapGrid"><thead><tr><th class="empty" rowspan="3" colspan="1"></th><th colspan="5">Store</th></tr><tr><th colspan="5">USA</th></tr><tr><th colspan="5">Store Type</th></tr><tr><th rowspan="">Measures</th><th colspan="1">Deluxe Supermarket</th><th colspan="1">Gourmet Supermarket</th><th colspan="1">Mid-Size Grocery</th><th colspan="1">Small Grocery</th><th colspan="1">Supermarket</th></tr></thead><tbody><tr class="even"><th rowspan="1"> Customer Count</th><td>752</td><td>1 059</td><td>95</td><td>582</td><td>3 841</td></tr></tbody></table>';
+
+        $this->assertEquals($test->generate(), $result);
+
+    }
+
+    public function test2DimensionsShiftWithNoTitle()
+    {
+        $test = $this->generateTable('resultSet6.xml');
+
+        $result = '<table class="olapGrid"><thead><tr><th class="empty" rowspan="1" colspan="1"></th><th colspan="5">USA</th></tr><tr><th rowspan="">Measures</th><th colspan="1">Deluxe Supermarket</th><th colspan="1">Gourmet Supermarket</th><th colspan="1">Mid-Size Grocery</th><th colspan="1">Small Grocery</th><th colspan="1">Supermarket</th></tr></thead><tbody><tr class="even"><th rowspan="1"> Customer Count</th><td>752</td><td>1 059</td><td>95</td><td>582</td><td>3 841</td></tr></tbody></table>';
+
+        $test->displayRowColHierarchyTitle = false;
+
+        $this->assertEquals($test->generate(), $result);
+
+    }
 
     protected function generateTable($xmlFile)
     {
