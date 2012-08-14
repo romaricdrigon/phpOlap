@@ -22,11 +22,11 @@ use phpOlap\Mdx\QueryException;
 
 class Query
 {
-    
     protected $cubeName = null;
     protected $rowElements = array();
     protected $colElements = array();
     protected $filterElements = array();
+    protected $calcMemberElements = array();
     protected $nonEmpty = false;
     protected $drillThrough = false;
     protected $drillThroughMaxRows = null;
@@ -105,18 +105,35 @@ class Query
         switch ($axis)
         {
             case 'ROW':
-                $this->rowElements[$this->getDimensionUniqueName($element)][] = $element;
-            break;
+                $this->rowElements[$dimension][] = $element;
+                break;
             case 'COL':
-                $this->colElements[$this->getDimensionUniqueName($element)][] = $element;
-            break;
+                $this->colElements[$dimension][] = $element;
+                break;
             case 'FILTER':
-                $this->filterElements[$this->getDimensionUniqueName($element)][] = $element;
-            break;
+                $this->filterElements[$dimension][] = $element;
+                break;
             default:
                 throw new QueryException(sprintf('Axis "%s" unknown ! Use "ROW", "COL" or "FILTER"', $axis));
-            break;
+                break;
         }
+    }
+
+    /**
+     * Add a calculated member
+     *
+     * @param String $element Element unique name
+     * @param String $axis Axis name ("ROW", "COL" or "FILTER")
+     *
+     */
+    public function addCalculatedMember($element, $formula)
+    {
+        $member = array(
+                    'name' => $element,
+                    'formula' => $formula
+                  );
+
+        $this->calcMemberElements[] = $member;
     }
 
     /**
@@ -136,8 +153,18 @@ class Query
         }
         
         $nonEmpty = $this->nonEmpty ? 'NON EMPTY ' : '';
+
+        $mdx = '';
+
+        if (count($this->calcMemberElements) !== 0) {
+            $mdx .= 'WITH ';
+
+            foreach ($this->calcMemberElements as $member) {
+                $mdx .= 'MEMBER '.$member['name'].' AS '.$member['formula'].' ';
+            }
+        }
         
-        $mdx =  ($this->drillThrough ? 'DRILLTHROUGH ':'').
+        $mdx .= ($this->drillThrough ? 'DRILLTHROUGH ':'').
                 (!is_null($this->drillThroughMaxRows) ? 'MAXROWS '.$this->drillThroughMaxRows.' ' : '').
                 (!is_null($this->drillThroughFirstRowSet) ? 'FIRSTROWSET '.$this->drillThroughFirstRowSet.' ' : '').
                 "SELECT " .
@@ -156,7 +183,6 @@ class Query
         }
 
         return $mdx;
-        
     }
 
     /**

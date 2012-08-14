@@ -271,4 +271,41 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 		$test->setDrillThrough(false);
 		$this->assertEquals($test->isDrillThrough(), false);
 	}
+
+    public function testCalculatedMember()
+    {
+        $test = new Query("[Sales]");
+        $test->addElement("[Measures].[Store Sales]", "ROW");
+        $test->addElement("[Measures].[moyenne]", "ROW");
+        $test->addElement("[Time].[Month].Members", "COL");
+        $test->addCalculatedMember("[Measures].[moyenne]", "[Measures].[Store Sales] / [Measures].[Sales Count]");
+
+        $result = "WITH MEMBER [Measures].[moyenne] AS [Measures].[Store Sales]".
+                    " / [Measures].[Sales Count] SELECT [Time].[Month].Members ON COLUMNS,".
+                    " {[Measures].[Store Sales], [Measures].[moyenne]} ON ROWS".
+                    " FROM [Sales]";
+
+        $this->assertEquals($test->toMdx(), $result);
+    }
+
+    public function test2Members()
+    {
+        $test = new Query("[Sales]");
+        $test->addElement("[Measures].[Store Sales]", "ROW");
+        $test->addElement("[Measures].[moyenne]", "ROW");
+        $test->addElement("[Measures].[tendance]", "ROW");
+        $test->addElement("[Time].[Month].Members", "COL");
+        $test->addCalculatedMember('[Measures].[moyenne]', '[Measures].[Store Sales] / [Measures].[Sales Count]');
+        $test->addCalculatedMember('[Measures].[tendance]', 'IIF(([Measures].[Store Sales], Time.PrevMember)<=([Measures].[Store Sales], Time.CurrentMember), "Croissance", "Décroissance")');
+
+        $result = 'WITH MEMBER [Measures].[moyenne] AS [Measures].[Store Sales]'.
+            ' / [Measures].[Sales Count] MEMBER [Measures].[tendance] AS'.
+            ' IIF(([Measures].[Store Sales], Time.PrevMember)<=([Measures].[Store Sales],'.
+            ' Time.CurrentMember), "Croissance", "Décroissance")'.
+            ' SELECT [Time].[Month].Members ON COLUMNS,'.
+            " {[Measures].[Store Sales], [Measures].[moyenne], [Measures].[tendance]} ON ROWS".
+            " FROM [Sales]";
+
+        $this->assertEquals($test->toMdx(), $result);
+    }
 }
