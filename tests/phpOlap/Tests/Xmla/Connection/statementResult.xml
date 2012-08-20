@@ -265,7 +265,7 @@
             </Tuple>
             <Tuple>
 
-              <Member Hierarchy="Employees">
+              <Member Hierarchy="Employees2">
                 <UName>[Employees].[Sheri Nowmer]</UName>
                 <Caption>Sheri Nowmer</Caption>
                 <LName>[Employees].[Employee Id]</LName>

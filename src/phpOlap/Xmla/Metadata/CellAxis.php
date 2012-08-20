@@ -32,6 +32,8 @@ class CellAxis implements CellAxisInterface
 	protected $levelUniqueName;
 	protected $levelNumber;
 	protected $displayInfo;
+    protected $dimensionName;
+    protected $levelTrueName;
 	
     /**
      * Return member unique name
@@ -89,6 +91,31 @@ class CellAxis implements CellAxisInterface
 	}
 
     /**
+     * Return the true name of dimension
+     * (will avoid ambiguity with shared dimensions)
+     *
+     * @return String Dimension name
+     *
+     */
+    public function getDimensionName()
+    {
+        return $this->dimensionName;
+    }
+
+    /**
+     * Return the complete level name
+     * with the "true" dimension name
+     * to avoid ambiguity with shared dimensions
+     *
+     * @return String Level name
+     *
+     */
+    public function getLevelTrueName()
+    {
+        return $this->levelTrueName;
+    }
+
+    /**
      * Hydrate Element
      *
      * @param DOMNode $node Node
@@ -102,6 +129,22 @@ class CellAxis implements CellAxisInterface
 		$this->levelUniqueName = MetadataBase::getPropertyFromNode($node, 'LName', false);
 		$this->levelNumber = MetadataBase::getPropertyFromNode($node, 'LNum', false);
 		$this->displayInfo = MetadataBase::getPropertyFromNode($node, 'DisplayInfo');
+
+        // rajouté pour lever l'ambiguïté liée aux dimension partagées
+        $this->dimensionName = $node->getAttribute('Hierarchy');
+        $this->calcLevelTrueName();
 	}
-	
+
+
+    /**
+     * Will replace the ambiguious dimension name
+     * with the unique one
+     *
+     * @return String Dimension name
+     *
+     */
+    private function calcLevelTrueName()
+    {
+        $this->levelTrueName = preg_replace("/\[[^\]]+\]/", '['.$this->dimensionName.']', $this->levelUniqueName, 1);
+    }
 }

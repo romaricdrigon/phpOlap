@@ -36,9 +36,10 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
 		
 		$colAxisSet = $resultSet->getColAxisSet();
 		$this->assertEquals($colAxisSet[0][0]->getMemberUniqueName(), '[Measures].[Org Salary]');
-		
+
 		$rowAxisSet = $resultSet->getRowAxisSet();
 		$this->assertEquals($rowAxisSet[0][0]->getMemberUniqueName(), '[Employees].[All Employees]');
+        $this->assertEquals($rowAxisSet[1][0]->getLevelTrueName(), '[Employees2].[Employee Id]');
 
 		$filterAxisSet = $resultSet->getFilterAxisSet();
 		$this->assertEquals($filterAxisSet[0][0]->getMemberUniqueName(), '[Time].[1997]');

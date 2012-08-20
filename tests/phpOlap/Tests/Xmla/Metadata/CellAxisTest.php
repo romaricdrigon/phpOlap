@@ -21,7 +21,7 @@ class CellAxisTest extends \PHPUnit_Framework_TestCase
 		
 		$axisXml = new \DOMDocument();
 		$axisXml->loadXML('
-			<Member Hierarchy="Employees">
+			<Member Hierarchy="Employees2">
                 <UName>[Employees].[All Employees]</UName>
                 <Caption>All Employees</Caption>
                 <LName>[Employees].[(All)]</LName>
@@ -40,6 +40,8 @@ class CellAxisTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals($cellAxis->getLevelUniqueName(), '[Employees].[(All)]');
 		$this->assertEquals($cellAxis->getLevelNumber(), 0);
 		$this->assertEquals($cellAxis->getDisplayInfo(), 65537);
+        $this->assertEquals($cellAxis->getDimensionName(), 'Employees2');
+        $this->assertEquals($cellAxis->getLevelTrueName(), '[Employees2].[(All)]');
 	}
 	
 }
