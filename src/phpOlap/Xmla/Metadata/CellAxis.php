@@ -34,6 +34,7 @@ class CellAxis implements CellAxisInterface
 	protected $displayInfo;
     protected $dimensionName;
     protected $levelTrueName;
+    protected $memberTrueName;
 	
     /**
      * Return member unique name
@@ -116,6 +117,19 @@ class CellAxis implements CellAxisInterface
     }
 
     /**
+     * Return the complete level name
+     * with the "true" dimension name
+     * to avoid ambiguity with shared dimensions
+     *
+     * @return String Member name
+     *
+     */
+    public function getMemberTrueName()
+    {
+        return $this->memberTrueName;
+    }
+
+    /**
      * Hydrate Element
      *
      * @param DOMNode $node Node
@@ -133,18 +147,27 @@ class CellAxis implements CellAxisInterface
         // rajouté pour lever l'ambiguïté liée aux dimension partagées
         $this->dimensionName = $node->getAttribute('Hierarchy');
         $this->calcLevelTrueName();
+        $this->calcMemberTrueName();
 	}
 
 
     /**
      * Will replace the ambiguious dimension name
-     * with the unique one
-     *
-     * @return String Dimension name
+     * with the unique one in level unique name
      *
      */
     private function calcLevelTrueName()
     {
         $this->levelTrueName = preg_replace("/\[[^\]]+\]/", '['.$this->dimensionName.']', $this->levelUniqueName, 1);
+    }
+
+    /**
+     * Will replace the ambiguious dimension name
+     * with the unique one in member unique name
+     *
+     */
+    private function calcMemberTrueName()
+    {
+        $this->memberTrueName = preg_replace("/\[[^\]]+\]/", '['.$this->dimensionName.']', $this->memberUniqueName, 1);
     }
 }
